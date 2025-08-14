@@ -1,0 +1,55 @@
+import random
+import time
+from datetime import datetime
+
+class Bus:
+    def __init__(self, bus_id, route_name):
+        self.bus_id = bus_id
+        self.route_name = route_name
+        self.latitude = None
+        self.longitude = None
+        self.status = "Not Started"
+
+    def update_location(self):
+        # Latitude and longitude range for Delhi example
+        self.latitude = round(random.uniform(28.40, 28.90), 6)
+        self.longitude = round(random.uniform(76.80, 77.40), 6)
+        self.status = "On Route"
+
+    def get_info(self):
+        return {
+            "Bus ID": self.bus_id,
+            "Route": self.route_name,
+            "Latitude": self.latitude,
+            "Longitude": self.longitude,
+            "Status": self.status,
+            "Last Updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+
+class BusTracker:
+    def __init__(self):
+        self.buses = []
+
+    def add_bus(self, bus):
+        self.buses.append(bus)
+
+    def simulate_tracking(self, update_interval=2, total_updates=5):
+        for _ in range(total_updates):  # Sirf total_updates baar chalega
+            print("\n=== Live Bus Locations ===")
+        for bus in self.buses:
+            bus.update_location()
+            print(bus.get_info())
+        time.sleep(update_interval)  # Wait before next update
+    print("\nTracking finished.")
+
+# -------- Main Program --------
+if __name__ == "__main__":
+    tracker = BusTracker()
+
+    # Add buses
+    tracker.add_bus(Bus("BUS101", "Route A - Connaught Place to Noida"))
+    tracker.add_bus(Bus("BUS102", "Route B - Dwarka to Gurgaon"))
+    tracker.add_bus(Bus("BUS103", "Route C - Rajouri Garden to Kashmere Gate"))
+
+    tracker.simulate_tracking(update_interval=3)
